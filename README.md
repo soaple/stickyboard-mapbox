@@ -1,5 +1,5 @@
 # stickyboard-mapbox
-CardList component for StickyBoard
+MapBox component for StickyBoard
 
 [![Version](https://img.shields.io/npm/v/@stickyboard/mapbox.svg)](https://npmjs.org/package/@stickyboard/mapbox)
 [![Downloads/week](https://img.shields.io/npm/dw/@stickyboard/mapbox.svg)](https://npmjs.org/package/@stickyboard/mapbox)
