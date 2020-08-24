@@ -20,7 +20,11 @@ const styles = {
     position: "absolute"
   };
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    height: 100%;
+    padding: 8px;
+    overflow: scroll;
+`;
 
 function MapBox(props) {
     const [map, setMap] = useState(null);
