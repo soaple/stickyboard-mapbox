@@ -47,9 +47,11 @@ function MapBox(props) {
       },[map]);
       
       return (
-        <div>
-        <div ref = {el => mapContainer.current = el} style={styles}/>
-      </div>
+        <Wrapper>
+            <div>
+                <div ref = {el => mapContainer.current = el} style={styles}/>
+            </div>
+        </Wrapper>
       )
 }
 
