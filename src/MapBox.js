@@ -9,10 +9,11 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import MAPBOX_KEY from './MapBoxKey';
 
 import mapboxgl from 'mapbox-gl';
 import "mapbox-gl/dist/mapbox-gl.css";
-mapboxgl.accessToken = process.env.REACT_MAPBOX_KEY;
+mapboxgl.accessToken = MAPBOX_KEY;
 
 const styles = {
     width: "100vw",
