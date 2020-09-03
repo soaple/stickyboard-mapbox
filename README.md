@@ -28,6 +28,7 @@ This project is licenced under the [MIT License](http://opensource.org/licenses/
 
 # Sample code
 This is a sample code, please make your inputs and try
+```bsh
 import React from 'react';
 import { MapBox } from '@stickyboard/mapbox';
 
@@ -134,3 +135,4 @@ function MapBoxChart(props) {
 }
 
 export default MapBoxChart;
+```
