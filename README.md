@@ -28,6 +28,9 @@ This project is licenced under the [MIT License](http://opensource.org/licenses/
 
 # Sample code
 This is a sample code, please make your inputs and try
+
+#1 Basic marker and line sample
+![mapbox_Ex1](https://user-images.githubusercontent.com/52831199/92392592-783f0200-f159-11ea-993c-a3f44b32315f.PNG)
 ```bsh
 import React from 'react';
 import { MapBox } from '@stickyboard/mapbox';
@@ -136,3 +139,38 @@ function MapBoxChart(props) {
 
 export default MapBoxChart;
 ```
+
+
+#2 Pitch and bearing 
+![mapbox_Ex2_pitch_bearing](https://user-images.githubusercontent.com/52831199/92392766-bf2cf780-f159-11ea-8550-564b2d5cf1db.PNG)
+
+```bsh
+map:{
+        canvas:{
+           ...
+        },
+        camera:{
+            center: [-77.04, 38.907],
+            zoom: 11,
+            pitch:60,
+            bearing:-60
+        },
+        ...
+```
+
+
+#3 enable / disable scroll Zoom
+
+Default is disable.
+
+![mapbox_Ex3_scrollable](https://user-images.githubusercontent.com/52831199/92394161-fdc3b180-f15b-11ea-862f-8140c4ef087f.PNG)
+
+```bsh
+map:{
+        canvas:{
+            size:{
+          ...
+            },
+            scrollZoom:true
+        },
+ ```
