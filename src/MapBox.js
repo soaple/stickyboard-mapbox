@@ -50,15 +50,15 @@ function MapBox(props) {
       
       let mapOption = {
         container: mapContainer.current,
-        style: (props.map.canvas.style!==undefined)? mapboxStyle[props.map.canvas.style]: 'mapbox://styles/mapbox/streets-v11',
+        style: (props.map.canvas.style !== undefined)? mapboxStyle[props.map.canvas.style]: 'mapbox://styles/mapbox/streets-v11',
         center: props.map.camera.center,
         zoom: props.map.camera.zoom,
       }
-      if(props.map.camera.pitch!==undefined)
+      if(props.map.camera.pitch !== undefined)
         mapOption.pitch = props.map.camera.pitch;
-      if(props.map.camera.bearing!==undefined)
+      if(props.map.camera.bearing !== undefined)
         mapOption.bearing = props.map.camera.bearing;
-      if(props.slideshow!==undefined)
+      if(props.slideshow !== undefined)
       {
         mapOption.maxZoom = props.slideshow.maxZoom
         mapOption.minZoom = props.slideshow.minZoom 
@@ -70,7 +70,7 @@ function MapBox(props) {
       if(!props.map.canvas.scrollZoom)
         mMap.scrollZoom.disable();
 
-      mMap.on('load', () =>{
+      mMap.on('load', () => {
         mMap.resize();
         setMap(mMap);
         
@@ -78,10 +78,10 @@ function MapBox(props) {
       
     };
 
-    const drawMarkers = ()=>{
+    const drawMarkers = () => {
 
       if(map){
-        if(props.map.marker!==undefined){
+        if(props.map.marker !== undefined){
 
           props.map.marker.forEach( (mark)=>{
     
@@ -96,10 +96,10 @@ function MapBox(props) {
       
     }
 
-    const drawLines = ()=>{
+    const drawLines = () => {
 
       if(map){
-        if(props.map.line!==undefined){
+        if(props.map.line !== undefined){
           props.map.line.forEach ( (line,idx)=>{
           
             let id = 'route'+idx;
@@ -146,7 +146,7 @@ function MapBox(props) {
     }
     
 
-    const storeLocationsForPlay = ()=>{
+    const storeLocationsForPlay = () => {
 
            
         let locations = props.slideshow.location.map((loc)=>{
@@ -167,23 +167,23 @@ function MapBox(props) {
       
       if(map){
         map.flyTo(locations[index].camera);
-        map.once('moveend',()=>{
+        map.once('moveend', () => {
 
           let reactMarker = React.createElement('div',getMarkerStyle(undefined),'styled');
           let marker = new mapboxgl.Marker(reactMarker).setLngLat(locations[index].camera.center).setPopup(new mapboxgl.Popup({offset:25}).setHTML('<h3>'+locations[index].title + '</h3><p>'+locations[index].description +'</p>')).addTo(map);
           marker.getPopup().addTo(map);
 
-          window.setTimeout(()=>{
+          window.setTimeout( () => {
 
             marker.remove();
             index = index + 1 === locations.length ? 0 : index + 1;
             
             playback(index, locations);
-          }, props.timeoutSec!==undefined ? props.timeoutSec : 3000);
+          }, props.timeoutSec !== undefined ? props.timeoutSec : 3000);
         })
       }
     }
-    useEffect( ()=>{
+    useEffect( () => {
       
         if(!map)
           initMap({setMap, mapContainer});
