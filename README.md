@@ -177,3 +177,38 @@ map:{
             scrollZoom:true
         },
  ```
+
+
+#4 3 type of Map styles
+
+1) streets-v11 (default)
+
+![mapbox_Ex2_pitch_bearing](https://user-images.githubusercontent.com/52831199/92392766-bf2cf780-f159-11ea-8550-564b2d5cf1db.PNG)
+
+```bsh
+map:{
+        canvas:{
+            style:0, //1, 2
+
+```
+
+2) light-v10
+
+![mapbox_Ex4_theme1](https://user-images.githubusercontent.com/52831199/92394812-2bf5c100-f15d-11ea-87fa-eac9eda4d71f.PNG)
+
+```bsh
+map:{
+        canvas:{
+            style:1,
+```
+
+3) dark=v10
+
+![mapbox_Ex4_theme2](https://user-images.githubusercontent.com/52831199/92394832-34e69280-f15d-11ea-868e-e6b5ce246884.PNG)
+
+
+```bsh
+map:{
+        canvas:{
+            style:2,
+```
