@@ -223,7 +223,7 @@ import { MapBox } from '@stickyboard/mapbox';
 
 const sampleInputs = {
     data:{
-        mapboxKey:'pk.eyJ1IjoiamVlc3ViIiwiYSI6ImNrZTAxemlnOTBmZmYycnA3aG8wcmo1eWkifQ.wTZ5zzP0m-nh8JrhcIu94A',
+        mapboxKey: 'YOUR MAPBOX KEY VALUE HERE!!!',
         title:'Stickyboard-mapbox example',
         description: 'This component is one of stickers in Stickyboard',
     },
