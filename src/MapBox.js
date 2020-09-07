@@ -75,15 +75,7 @@ function MapBox(props) {
         setMap(mMap);
         
       });
-          
-      if(props.map.camera.centerTheMapOnAClick)
-          {
-            mMap.on('click','symbols',(e)=>{
-              mMap.flyTo({
-                center:e.features[0].geometry.coordinates
-              })
-            });
-          }
+      
     };
 
     const drawMarkers = ()=>{
