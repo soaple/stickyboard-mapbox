@@ -30,6 +30,11 @@ const getMarkerStyle= (icon) => {
   }
 }
 
+const mapboxStyle=[
+  'mapbox://styles/mapbox/streets-v11',
+  'mapbox://styles/mapbox/light-v10',
+  'mapbox://styles/mapbox/dark-v10'
+]
 function MapBox(props) {
     mapboxgl.accessToken = props.data.mapboxKey;
 
@@ -42,18 +47,40 @@ function MapBox(props) {
     }
 
     const initMap = ({setMap, mapContainer}) =>{
-      const mMap = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: props.map.camera.center,
-        zoom: props.map.camera.zoom
-      });
+
+      console.log(props.map.camera.pitch,props.map.camera.bearing )
       
+      let mapOption = {
+        container: mapContainer.current,
+        style: (props.map.canvas.style!==undefined)? mapboxStyle[props.map.canvas.style]: 'mapbox://styles/mapbox/streets-v11',
+        center: props.map.camera.center,
+        zoom: props.map.camera.zoom,
+      }
+      if(props.map.camera.pitch!==undefined)
+        mapOption.pitch = props.map.camera.pitch;
+      if(props.map.camera.bearing!==undefined)
+        mapOption.bearing = props.map.camera.bearing;
+      
+      const mMap = new mapboxgl.Map(mapOption);
+      
+      
+      if(!props.map.canvas.scrollZoom)
+        mMap.scrollZoom.disable();
+
       mMap.on('load', () =>{
         mMap.resize();
         setMap(mMap);
-        
+        console.log(mMap.pitch,mMap.bearing);
       });
+          
+      if(props.map.camera.centerTheMapOnAClick)
+          {
+            mMap.on('click','symbols',(e)=>{
+              mMap.flyTo({
+                center:e.features[0].geometry.coordinates
+              })
+            });
+          }
     };
 
     const drawMarkers = ()=>{
@@ -63,8 +90,11 @@ function MapBox(props) {
   
           let reactMarker = React.createElement('div',getMarkerStyle(mark.img),'styled');
           let marker = new mapboxgl.Marker(reactMarker).setLngLat(mark.coordinates).setPopup(new mapboxgl.Popup({offset:25,closeOnClick: mark.closeOnClick }).setHTML('<h3>'+mark.title + '</h3><p>'+mark.description +'</p>')).addTo(map);          
+          
           if(mark.display)
             marker.getPopup().addTo(map);
+
+      
         })
       }
       
@@ -116,6 +146,7 @@ function MapBox(props) {
       
     }
     useEffect( ()=>{
+      
         if(!map)
           initMap({setMap, mapContainer});
 
@@ -140,14 +171,19 @@ MapBox.propTypes ={
   }),
   map:PropTypes.shape({
     canvas:PropTypes.shape({
+      style:PropTypes.number,
       size:PropTypes.shape({
         width:PropTypes.string,
         height:PropTypes.string
-      })
+      }),
+      scrollZoom:PropTypes.bool
     }),
     camera:PropTypes.shape({
       center: PropTypes.array,
-      zoom: PropTypes.number
+      zoom: PropTypes.number,
+      pitch: PropTypes.number,
+      bearing: PropTypes.number,
+      
     }),
     
     marker: PropTypes.arrayOf(PropTypes.shape({
@@ -155,7 +191,8 @@ MapBox.propTypes ={
       coordinates: PropTypes.array,
       title: PropTypes.string,
       description: PropTypes.string,
-      display:PropTypes.bool
+      display:PropTypes.bool,
+      
       
     })),
     
@@ -167,10 +204,7 @@ MapBox.propTypes ={
       coordinates: PropTypes.arrayOf(PropTypes.array),
       title: PropTypes.string,
       description: PropTypes.string
-      
     })),
-
-
   })
 }
 export default MapBox;
