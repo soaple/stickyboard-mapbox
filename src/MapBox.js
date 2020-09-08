@@ -30,6 +30,11 @@ const getMarkerStyle= (icon) => {
   }
 }
 
+const mapboxStyle=[
+  'mapbox://styles/mapbox/streets-v11',
+  'mapbox://styles/mapbox/light-v10',
+  'mapbox://styles/mapbox/dark-v10'
+]
 function MapBox(props) {
     mapboxgl.accessToken = props.data.mapboxKey;
 
@@ -42,85 +47,152 @@ function MapBox(props) {
     }
 
     const initMap = ({setMap, mapContainer}) =>{
-      const mMap = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: props.map.camera.center,
-        zoom: props.map.camera.zoom
-      });
       
-      mMap.on('load', () =>{
+      let mapOption = {
+        container: mapContainer.current,
+        style: (props.map.canvas.style !== undefined)? mapboxStyle[props.map.canvas.style]: 'mapbox://styles/mapbox/streets-v11',
+        center: props.map.camera.center,
+        zoom: props.map.camera.zoom,
+      }
+      if(props.map.camera.pitch !== undefined)
+        mapOption.pitch = props.map.camera.pitch;
+      if(props.map.camera.bearing !== undefined)
+        mapOption.bearing = props.map.camera.bearing;
+      if(props.slideshow !== undefined)
+      {
+        mapOption.maxZoom = props.slideshow.maxZoom
+        mapOption.minZoom = props.slideshow.minZoom 
+      }
+      
+      const mMap = new mapboxgl.Map(mapOption);
+      
+      
+      if(!props.map.canvas.scrollZoom)
+        mMap.scrollZoom.disable();
+
+      mMap.on('load', () => {
         mMap.resize();
         setMap(mMap);
         
       });
+      
     };
 
-    const drawMarkers = ()=>{
+    const drawMarkers = () => {
 
       if(map){
-        props.map.marker.forEach( (mark)=>{
-  
-          let reactMarker = React.createElement('div',getMarkerStyle(mark.img),'styled');
-          let marker = new mapboxgl.Marker(reactMarker).setLngLat(mark.coordinates).setPopup(new mapboxgl.Popup({offset:25,closeOnClick: mark.closeOnClick }).setHTML('<h3>'+mark.title + '</h3><p>'+mark.description +'</p>')).addTo(map);          
-          if(mark.display)
-            marker.getPopup().addTo(map);
-        })
+        if(props.map.marker !== undefined){
+
+          props.map.marker.forEach( (mark)=>{
+    
+            let reactMarker = React.createElement('div',getMarkerStyle(mark.img),'styled');
+            let marker = new mapboxgl.Marker(reactMarker).setLngLat(mark.coordinates).setPopup(new mapboxgl.Popup({offset:25,closeOnClick: mark.closeOnClick }).setHTML('<h3>'+mark.title + '</h3><p>'+mark.description +'</p>')).addTo(map);          
+            
+            if(mark.display)
+              marker.getPopup().addTo(map);        
+          })
+        }
       }
       
     }
 
-    const drawLines = ()=>{
+    const drawLines = () => {
 
       if(map){
-        props.map.line.forEach ( (line,idx)=>{
+        if(props.map.line !== undefined){
+          props.map.line.forEach ( (line,idx)=>{
           
-          let id = 'route'+idx;
-          let route = {
-            type : 'geojson',
-            data : {
-              type: 'FeatureCollection',
-              features: [
-                {
-                  type: 'Feature',
-                  geometry: {
-                    type: 'LineString',
-                    coordinates: line.coordinates
-                  },
-                  properties:{
-                    title:line.title,
-                    description:line.description
+            let id = 'route'+idx;
+            let route = {
+              type : 'geojson',
+              data : {
+                type: 'FeatureCollection',
+                features: [
+                  {
+                    type: 'Feature',
+                    geometry: {
+                      type: 'LineString',
+                      coordinates: line.coordinates
+                    },
+                    properties:{
+                      title:line.title,
+                      description:line.description
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
-          }
-          let layer = {
-            id: 'layer'+idx,
-            type: 'line',
-            source: id,
-            layout: {
-              'line-join': 'round',
-              'line-cap': 'round'
-            },
-            paint: {
-              'line-color': line.paint.lineColor,
-              'line-width': line.paint.lineWidth
+            let layer = {
+              id: 'layer'+idx,
+              type: 'line',
+              source: id,
+              layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+              },
+              paint: {
+                'line-color': line.paint.lineColor,
+                'line-width': line.paint.lineWidth
+              }
             }
-          }
-
-          map.addSource(id,route);
-          map.addLayer(layer);
-        })
+  
+            map.addSource(id,route);
+            map.addLayer(layer);
+          })
+        }
+        
       }
       
     }
-    useEffect( ()=>{
+    
+
+    const storeLocationsForPlay = () => {
+
+           
+        let locations = props.slideshow.location.map((loc)=>{
+          
+          return {
+            id:loc.id,
+            title:loc.title,
+            description:loc.description,
+            camera:loc.camera
+          }
+        })
+
+        playback(0,locations);
+      
+      
+    }
+    const playback = (index, locations)=>{
+      
+      if(map){
+        map.flyTo(locations[index].camera);
+        map.once('moveend', () => {
+
+          let reactMarker = React.createElement('div',getMarkerStyle(undefined),'styled');
+          let marker = new mapboxgl.Marker(reactMarker).setLngLat(locations[index].camera.center).setPopup(new mapboxgl.Popup({offset:25}).setHTML('<h3>'+locations[index].title + '</h3><p>'+locations[index].description +'</p>')).addTo(map);
+          marker.getPopup().addTo(map);
+
+          window.setTimeout( () => {
+
+            marker.remove();
+            index = index + 1 === locations.length ? 0 : index + 1;
+            
+            playback(index, locations);
+          }, props.timeoutSec !== undefined ? props.timeoutSec : 3000);
+        })
+      }
+    }
+    useEffect( () => {
+      
         if(!map)
           initMap({setMap, mapContainer});
 
         drawMarkers();
         drawLines();
+        
+        if(props.slideshow)
+          storeLocationsForPlay();
     },[map]);
       
     return (
@@ -137,17 +209,22 @@ MapBox.propTypes ={
     mapboxKey:PropTypes.string.isRequired,
     title:PropTypes.string,
     description: PropTypes.string,
-  }),
+  }).isRequired,
   map:PropTypes.shape({
     canvas:PropTypes.shape({
+      style:PropTypes.number,
       size:PropTypes.shape({
         width:PropTypes.string,
         height:PropTypes.string
-      })
+      }),
+      scrollZoom:PropTypes.bool
     }),
     camera:PropTypes.shape({
       center: PropTypes.array,
-      zoom: PropTypes.number
+      zoom: PropTypes.number,
+      pitch: PropTypes.number,
+      bearing: PropTypes.number,
+      
     }),
     
     marker: PropTypes.arrayOf(PropTypes.shape({
@@ -155,7 +232,8 @@ MapBox.propTypes ={
       coordinates: PropTypes.array,
       title: PropTypes.string,
       description: PropTypes.string,
-      display:PropTypes.bool
+      display:PropTypes.bool,
+      
       
     })),
     
@@ -167,10 +245,24 @@ MapBox.propTypes ={
       coordinates: PropTypes.arrayOf(PropTypes.array),
       title: PropTypes.string,
       description: PropTypes.string
-      
     })),
-
-
+  }),
+  slideshow:PropTypes.shape({
+    maxZoom:PropTypes.number,
+    minZoom:PropTypes.number,
+    timeoutSec:PropTypes.number,
+    location:PropTypes.arrayOf(PropTypes.shape({
+      id:PropTypes.string,
+      title:PropTypes.string,
+      description:PropTypes.string,
+      camera:PropTypes.shape({
+        center:PropTypes.array,
+        zoom:PropTypes.number,
+        pitch:PropTypes.number,
+        bearing:PropTypes.number,
+        
+      })
+    }))
   })
 }
 export default MapBox;
