@@ -179,7 +179,7 @@ map:{
  ```
 
 
-#4 3 type of Map styles
+#4 6 types of Map style
 
 1) streets-v11 (default)
 
@@ -202,7 +202,7 @@ map:{
             style:1,
 ```
 
-3) dark=v10
+3) dark-v10
 
 ![mapbox_Ex4_theme2](https://user-images.githubusercontent.com/52831199/92394832-34e69280-f15d-11ea-868e-e6b5ce246884.PNG)
 
@@ -212,6 +212,37 @@ map:{
         canvas:{
             style:2,
 ```
+4) satellite-v9
+
+![mapbox_Ex6_satelite-v9](https://user-images.githubusercontent.com/52831199/92487154-ddf9bf80-f227-11ea-94d0-859e3236731a.PNG)
+
+```bsh
+map:{
+        canvas:{
+            style:3,
+```
+
+5) satellite-streets-v11
+
+![mapbox_Ex6_satelite-streets-v11](https://user-images.githubusercontent.com/52831199/92487133-d89c7500-f227-11ea-8458-7e09a74b018b.PNG)
+
+```bsh
+map:{
+        canvas:{
+            style:4,
+```
+
+6) outdoors-v11
+
+![mapbox_Ex6_outdoors-v11](https://user-images.githubusercontent.com/52831199/92487107-d1756700-f227-11ea-8e36-1fb50f1ce8dc.PNG)
+
+```bsh
+map:{
+        canvas:{
+            style:5,
+```
+
+
 
 #5 Play map locations as a slidesshow
 
@@ -332,3 +363,42 @@ function MapBoxChart(props) {
 export default MapBoxChart;
 
 ```
+
+
+#6 Additional source and layers
+
+![mapbox_Ex5_source_and_layer](https://user-images.githubusercontent.com/52831199/92487195-eb16ae80-f227-11ea-975f-3d5c010c5981.PNG)
+
+ 1) vector tile source
+ 
+ ```bsh
+    data:{
+        ...
+    },
+    map:{
+        ...
+    },
+    slideshow:{
+        ...
+    },
+    source:[{
+        name:'mapbox-terrain',
+        type: 'vector',
+        url: 'mapbox://mapbox.mapbox-terrain-v2'
+    }],
+    layer:[{
+        'id': 'terrain-data',
+        'type': 'line',
+        'source': 'mapbox-terrain',
+        'source-layer': 'contour',
+        'layout': {
+        'line-join': 'round',
+        'line-cap': 'round'
+        },
+        'paint': {
+        'line-color': '#ff69b4',
+        'line-width': 1
+        }
+    }
+    ]
+ ```

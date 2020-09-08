@@ -33,7 +33,10 @@ const getMarkerStyle= (icon) => {
 const mapboxStyle=[
   'mapbox://styles/mapbox/streets-v11',
   'mapbox://styles/mapbox/light-v10',
-  'mapbox://styles/mapbox/dark-v10'
+  'mapbox://styles/mapbox/dark-v10',
+  'mapbox://styles/mapbox/satellite-v9',
+  'mapbox://styles/mapbox/satellite-streets-v11',
+  'mapbox://styles/mapbox/outdoors-v11',
 ]
 function MapBox(props) {
     mapboxgl.accessToken = props.data.mapboxKey;
@@ -144,7 +147,20 @@ function MapBox(props) {
       }
       
     }
-    
+    const addSources = () => {
+      if(map){
+        props.source.map( (source) => {
+          map.addSource(source.name,{type:source.type,url:source.url});
+        })
+      }
+    }
+    const addLayers = () => {
+      if(map){
+        props.layer.map( (layer) => {
+          map.addLayer(layer);
+        })
+      }
+    }
 
     const storeLocationsForPlay = () => {
 
@@ -193,6 +209,11 @@ function MapBox(props) {
         
         if(props.slideshow)
           storeLocationsForPlay();
+        if(props.source)
+          addSources();
+        if(props.layer)
+          addLayers();
+        
     },[map]);
       
     return (
@@ -263,6 +284,26 @@ MapBox.propTypes ={
         
       })
     }))
-  })
+  }),
+  source:PropTypes.arrayOf(PropTypes.shape({
+    name:PropTypes.string,
+    type:PropTypes.string,
+    url:PropTypes.string
+  })),
+  layer:PropTypes.arrayOf(PropTypes.shape({
+    id:PropTypes.string,
+    type:PropTypes.string,
+    source:PropTypes.string,
+    'source-layer':PropTypes.string,
+    layout:PropTypes.shape({
+      'line-join':PropTypes.string,
+      'line-cap':PropTypes.string,
+    }),
+    paint:PropTypes.shape({
+      'line-color':PropTypes.string,
+      'line-width':PropTypes.number
+    })
+  })),
+
 }
 export default MapBox;
