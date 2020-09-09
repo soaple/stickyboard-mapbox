@@ -15,11 +15,6 @@ $ npm start
 $ npm run build
 ```
 
-# Publish to npm
-```bsh
-$ npm run publish
-```
-
 # License
 This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).
 
