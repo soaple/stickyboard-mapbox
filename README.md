@@ -402,3 +402,65 @@ export default MapBoxChart;
     }
     ]
  ```
+ 
+ 
+ 
+ #7 3d building layers
+ 
+ ![mapbox_Ex7_3d-building](https://user-images.githubusercontent.com/52831199/92612903-4d89b080-f2f5-11ea-99d8-92dccea2c997.PNG)
+ 
+ You can simply set 3d building layers with building3d props value as true
+ ```bsh
+ data:{
+       ...
+ },
+ map:{
+     canvas:{
+            ...
+         building3d:true,
+ ```
+ 
+ Here's an simple sample code of above picture.
+ 
+ ```bsh
+ import React from 'react';
+import { MapBox } from '@stickyboard/mapbox';
+
+const sampleInputs = {
+    data:{
+        mapboxKey:'YOUR MAPBOX KEY VALUE HERE!!!',
+        title:'Stickyboard-mapbox example',
+        description: 'This component is one of stickers in Stickyboard',
+    },
+    map:{
+        canvas:{
+            style:0,
+            building3d:true,
+            size:{
+                width:'600px',
+                height:'600px'
+            },
+            scrollZoom:true
+        },
+        camera:{
+            center: [126.939016,  37.519961],
+            zoom: 16.5,
+            pitch:30,
+            bearing:-20,
+            centerTheMapOnAClick:true
+        },
+    },
+}
+
+function MapBoxChart(props) {
+    
+    return (
+        <div >
+
+            <MapBox data={sampleInputs.data} map={sampleInputs.map} />
+        </div>
+    );
+}
+
+export default MapBoxChart;
+ ```
