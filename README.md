@@ -457,8 +457,7 @@ function MapBoxChart(props) {
     return (
         <div >
 
-            <MapBox data={sampleInputs.data} map={sampleInputs.map} slideshow={sampleInputs.slideshow}
-            source={sampleInputs.source} layer={sampleInputs.layer}/>
+            <MapBox data={sampleInputs.data} map={sampleInputs.map} />
         </div>
     );
 }
