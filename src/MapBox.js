@@ -38,7 +38,58 @@ const mapboxStyle=[
   'mapbox://styles/mapbox/satellite-streets-v11',
   'mapbox://styles/mapbox/outdoors-v11',
 ]
+const building3dLayer = {
+  'id': '3d-buildings',
+  'source': 'composite',
+  'source-layer': 'building',
+  'filter': ['==', 'extrude', 'true'],
+  'type': 'fill-extrusion',
+  'minzoom': 15,
+  'paint': {
+    'fill-extrusion-color': '#aaa',
+    
+    // use an 'interpolate' expression to add a smooth transition effect to the
+    // buildings as the user zooms in
+    'fill-extrusion-height': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        15,
+        0,
+        15.05,
+        ['get', 'height']
+      ],
+      'fill-extrusion-base': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        15,
+        0,
+        15.05,
+        ['get', 'min_height']
+      ],
+    'fill-extrusion-opacity': 0.6
+    }
+  }
+  const add3dBuildingLayer = (map) => {
+
+    var layers = map.getStyle().layers;
+          
+    var labelLayerId;
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+        labelLayerId = layers[i].id;
+        break;
+      }
+    }
+
+    map.addLayer(
+      building3dLayer,
+      labelLayerId
+    );
+  }
 function MapBox(props) {
+  
     mapboxgl.accessToken = props.data.mapboxKey;
 
     
@@ -73,11 +124,15 @@ function MapBox(props) {
       if(!props.map.canvas.scrollZoom)
         mMap.scrollZoom.disable();
 
-      mMap.on('load', () => {
-        mMap.resize();
-        setMap(mMap);
+        mMap.on('load', () => {
+          mMap.resize();
+          if(props.map.canvas.building3d){
+            add3dBuildingLayer(mMap);
+          }
+          setMap(mMap);
+          
+        });
         
-      });
       
     };
 
@@ -225,6 +280,8 @@ function MapBox(props) {
     )
 }
 
+
+
 MapBox.propTypes ={
   data:PropTypes.shape({
     mapboxKey:PropTypes.string.isRequired,
@@ -234,6 +291,7 @@ MapBox.propTypes ={
   map:PropTypes.shape({
     canvas:PropTypes.shape({
       style:PropTypes.number,
+      building3d:PropTypes.bool,
       size:PropTypes.shape({
         width:PropTypes.string,
         height:PropTypes.string
