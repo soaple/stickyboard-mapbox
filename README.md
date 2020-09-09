@@ -179,7 +179,7 @@ map:{
  ```
 
 
-#4 6 type of Map styles
+#4 6 types of Map style
 
 1) streets-v11 (default)
 
