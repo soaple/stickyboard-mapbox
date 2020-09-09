@@ -45,16 +45,12 @@ const sampleInputs = {
     },
     map:{
         canvas:{
-            size:{
-                width:'400px',
-                height:'400px'
-            }
         },
         camera:{
             center: [-77.04, 38.907],
             zoom: 10
         },
-        
+
         marker: [{
         coordinates: [-77.038659, 38.931567],
         title: 'Mapbox Sticker Example#1',
@@ -78,9 +74,9 @@ const sampleInputs = {
             display:true,
             closeOnClick:true
         },
-    
+
     ],
-        
+
         line:[{
         paint:{
             lineColor : '#888',
@@ -94,7 +90,7 @@ const sampleInputs = {
         ],
         title: 'line#1',
         description: 'line#1 description here'
-        
+
         },{
             paint:{
                 lineColor : '#222',
@@ -130,7 +126,7 @@ const sampleInputs = {
 }
 
 function MapBoxChart(props) {
-    
+
     return (
         <div >
 
@@ -143,7 +139,7 @@ export default MapBoxChart;
 ```
 
 
-#2 Pitch and bearing 
+#2 Pitch and bearing
 
 ![mapbox_Ex2_pitch_bearing](https://user-images.githubusercontent.com/52831199/92392766-bf2cf780-f159-11ea-8550-564b2d5cf1db.PNG)
 
@@ -171,9 +167,6 @@ Default is disable.
 ```bsh
 map:{
         canvas:{
-            size:{
-          ...
-            },
             scrollZoom:true
         },
  ```
@@ -261,10 +254,6 @@ const sampleInputs = {
     map:{
         canvas:{
             style:2,
-            size:{
-                width:'400px',
-                height:'400px'
-            },
             scrollZoom:true
         },
         camera:{
@@ -351,7 +340,7 @@ const sampleInputs = {
 }
 
 function MapBoxChart(props) {
-    
+
     return (
         <div >
 
@@ -370,7 +359,7 @@ export default MapBoxChart;
 ![mapbox_Ex5_source_and_layer](https://user-images.githubusercontent.com/52831199/92487195-eb16ae80-f227-11ea-975f-3d5c010c5981.PNG)
 
  1) vector tile source
- 
+
  ```bsh
     data:{
         ...
@@ -402,13 +391,13 @@ export default MapBoxChart;
     }
     ]
  ```
- 
- 
- 
+
+
+
  #7 3d building layers
- 
+
  ![mapbox_Ex7_3d-building](https://user-images.githubusercontent.com/52831199/92612903-4d89b080-f2f5-11ea-99d8-92dccea2c997.PNG)
- 
+
  You can simply set 3d building layers with building3d props value as true
  ```bsh
  data:{
@@ -419,9 +408,9 @@ export default MapBoxChart;
             ...
          building3d:true,
  ```
- 
+
  Here's an simple sample code of above picture.
- 
+
  ```bsh
  import React from 'react';
 import { MapBox } from '@stickyboard/mapbox';
@@ -436,10 +425,6 @@ const sampleInputs = {
         canvas:{
             style:0,
             building3d:true,
-            size:{
-                width:'600px',
-                height:'600px'
-            },
             scrollZoom:true
         },
         camera:{
@@ -453,7 +438,7 @@ const sampleInputs = {
 }
 
 function MapBoxChart(props) {
-    
+
     return (
         <div >
 
