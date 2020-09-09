@@ -69,8 +69,8 @@ const building3dLayer = {
         ['get', 'min_height']
       ],
     'fill-extrusion-opacity': 0.6
-    }
   }
+}
   const add3dBuildingLayer = (map) => {
 
     var layers = map.getStyle().layers;
