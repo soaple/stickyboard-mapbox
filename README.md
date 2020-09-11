@@ -464,3 +464,28 @@ function MapBoxChart(props) {
 
 export default MapBoxChart;
  ```
+
+
+
+#8 Geolocation enable
+User can enable geolocation and map will fly to the location where the user is.
+
+
+```bsh
+map:{
+        canvas:{
+              ...
+            geoLocation:true,
+```
+
+
+If you put openweatherAPI key, weather information of the location will be popped up
+
+![mapbox_Ex8_geolocation_weather](https://user-images.githubusercontent.com/52831199/92929682-e5b1a200-f47b-11ea-8314-5e5be1355103.PNG)
+
+
+```bsh
+ data:{
+        ...
+        openweathermapKey:'OPENWEATHER API HERE'
+```
