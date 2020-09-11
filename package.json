@@ -1,13 +1,12 @@
 {
     "name": "@stickyboard/mapbox",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "MapBox component for StickyBoard",
     "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack --watch",
-        "build": "webpack",
-        "publish": "npm install && npm run build && npm publish --access public"
+        "build": "webpack"
     },
     "dependencies": {
         "axios": "^0.20.0",

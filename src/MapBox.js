@@ -11,9 +11,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import mapboxgl from 'mapbox-gl';
-import Axios from 'axios'
+import Axios from 'axios';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
 
 const Wrapper = styled.div`
     width: 100%;
@@ -96,9 +95,8 @@ function MapBox(props) {
     const [map, setMap] = useState(null);
     const mapContainer = useRef(null);
 
-
-    const initMap = ({setMap, mapContainer}) =>{
-      let mapOption = {
+    const initMap = ({ setMap, mapContainer }) => {
+        let mapOption = {
             container: mapContainer.current,
             style:
                 props.map.canvas.style !== undefined
@@ -119,60 +117,84 @@ function MapBox(props) {
         const mMap = new mapboxgl.Map(mapOption);
 
         if (!props.map.canvas.scrollZoom) mMap.scrollZoom.disable();
-      
+
         mMap.on('load', () => {
-          mMap.resize();
-          if(props.map.canvas.building3d){
-            add3dBuildingLayer(mMap);
-          }
+            mMap.resize();
+            if (props.map.canvas.building3d) {
+                add3dBuildingLayer(mMap);
+            }
 
-          if(props.map.canvas.geoLocation)
-          {
-            if(!navigator.geolocation){
-              console.log('Geolocation is not supported by this browser');
-            } else {
-              console.log('Getting current position');
-              navigator.geolocation.getCurrentPosition( position => {
+            if (props.map.canvas.geoLocation) {
+                if (!navigator.geolocation) {
+                    console.log('Geolocation is not supported by this browser');
+                } else {
+                    console.log('Getting current position');
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        const urlByGps =
+                            'https://api.openweathermap.org/data/2.5/weather?lat=' +
+                            position.coords.latitude +
+                            '&lon=' +
+                            position.coords.longitude +
+                            '&appid=' +
+                            props.data.openweathermapKey;
 
-                const urlByGps = 'https://api.openweathermap.org/data/2.5/weather?lat=' + position.coords.latitude + '&lon=' + position.coords.longitude + '&appid=' + props.data.openweathermapKey;
+                        const loc = {
+                            center: [
+                                position.coords.longitude,
+                                position.coords.latitude,
+                            ],
+                            zoom: 14,
+                            pitch: 60,
+                            bearing: -60,
+                        };
+                        mMap.flyTo(loc);
+                        Axios.get(urlByGps)
+                            .then((res) => {
+                                const data = res.data;
+                                console.log(data);
+                                const weatherInformation = {
+                                    name: data.name,
+                                    rain: data.rain['1h'],
+                                    clouds: data.clouds.all,
+                                    weather: data.weather[0],
+                                    feels_like: (
+                                        data.main.feels_like - 273
+                                    ).toFixed(2),
+                                    humidity: data.main.humidity,
+                                    pressure: data.main.pressure,
+                                    temp: (data.main.temp - 273).toFixed(2),
+                                    temp_max: (
+                                        data.main.temp_max - 273
+                                    ).toFixed(2),
+                                    temp_min: (
+                                        data.main.temp_min - 273
+                                    ).toFixed(2),
+                                    wind: data.wind,
+                                    loading: false,
+                                };
+                                const imgSrc =
+                                    'http://openweathermap.com/img/w/' +
+                                    weatherInformation.weather.icon +
+                                    '.png';
 
-                const loc = {
-                  center:[position.coords.longitude,position.coords.latitude],
-                  zoom:14,
-                  pitch:60,
-                  bearing:-60,
-                }
-                mMap.flyTo(loc);
-                Axios.get(urlByGps).then( res => {
-                      const data = res.data;
-                      console.log(data);
-                      const weatherInformation = {
-                        name : data.name,
-                        rain : data.rain['1h'],
-                        clouds : data.clouds.all,
-                        weather : data.weather[0],
-                        feels_like : (data.main.feels_like - 273).toFixed(2),
-                        humidity : data.main.humidity,
-                        pressure : data.main.pressure,
-                        temp : (data.main.temp - 273).toFixed(2),
-                        temp_max : (data.main.temp_max - 273).toFixed(2),
-                        temp_min : (data.main.temp_min - 273).toFixed(2),
-                        wind : data.wind,
-                        loading : false,
-                      }
-                      const imgSrc = 'http://openweathermap.com/img/w/' + weatherInformation.weather.icon + '.png';
-
-                      mMap.once('moveend', () => {
-                        let markerElement = document.createElement('div');
-                        markerElement.style.cssText=`background-image: url(${imgSrc});
+                                mMap.once('moveend', () => {
+                                    let markerElement = document.createElement(
+                                        'div'
+                                    );
+                                    markerElement.style.cssText = `background-image: url(${imgSrc});
                         background-size: cover;
                         width: 100px;
                         height: 100px;
                         border-radius: 50%;
                         cursor: pointer;`;
 
-                        let marker = new mapboxgl.Marker(markerElement).setLngLat(loc.center).setPopup(new mapboxgl.Popup({offset:25})
-                        .setHTML(`<h2> ${weatherInformation.name} </h2>
+                                    let marker = new mapboxgl.Marker(
+                                        markerElement
+                                    )
+                                        .setLngLat(loc.center)
+                                        .setPopup(
+                                            new mapboxgl.Popup({ offset: 25 })
+                                                .setHTML(`<h2> ${weatherInformation.name} </h2>
                          <p> <h3> It's ${weatherInformation.weather.main}y (${weatherInformation.weather.description})<br>
                          Feels like ${weatherInformation.feels_like} 'C <br> </h3>
 
@@ -180,22 +202,21 @@ function MapBox(props) {
                          Temperature : ${weatherInformation.temp} 'C <br>
                                        - MAX : ${weatherInformation.temp_max} 'C <br>
                                        - MIN : ${weatherInformation.temp_min} 'C <br>
-                         Humidity : ${weatherInformation.humidity}, 
+                         Humidity : ${weatherInformation.humidity},
                          Clouds : ${weatherInformation.clouds}<br>
-                         Wind : Speed - ${weatherInformation.wind.speed}, Degree : ${weatherInformation.wind.deg}<br><br> </p>`)).addTo(mMap);
-                         marker.getPopup().addTo(mMap);
-                      });
-                }).catch( err => console.log(err) );
+                         Wind : Speed - ${weatherInformation.wind.speed}, Degree : ${weatherInformation.wind.deg}<br><br> </p>`)
+                                        )
+                                        .addTo(mMap);
+                                    marker.getPopup().addTo(mMap);
+                                });
+                            })
+                            .catch((err) => console.log(err));
+                    });
+                }
+            }
 
-
-             })
-           }
-        } 
-        
-        setMap(mMap);
-        
-      });
-       
+            setMap(mMap);
+        });
     };
 
     const drawMarkers = () => {
@@ -369,7 +390,7 @@ function MapBox(props) {
 MapBox.propTypes = {
     data: PropTypes.shape({
         mapboxKey: PropTypes.string.isRequired,
-        openweathermapKey:PropTypes.string,
+        openweathermapKey: PropTypes.string,
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
@@ -378,8 +399,8 @@ MapBox.propTypes = {
             style: PropTypes.number,
             building3d: PropTypes.bool,
             scrollZoom: PropTypes.bool,
-            geoLocation:PropTypes.bool,
-            interactive:PropTypes.bool
+            geoLocation: PropTypes.bool,
+            interactive: PropTypes.bool,
         }),
         camera: PropTypes.shape({
             center: PropTypes.array,

@@ -378,7 +378,7 @@ export default MapBoxChart;
         },
     ],
  ```
- 
+
  ## 3D building layers
 
  ![mapbox_Ex7_3d-building](https://user-images.githubusercontent.com/52831199/92612903-4d89b080-f2f5-11ea-99d8-92dccea2c997.PNG)
@@ -435,12 +435,10 @@ function MapBoxChart(props) {
 export default MapBoxChart;
  ```
 
-
 ## Geolocation enable
 User can enable geolocation and map will fly to the location where the user is.
 
-
-```bsh
+```javascript
 map:{
         canvas:{
               ...
@@ -448,19 +446,18 @@ map:{
 ```
 
 
-If you put openweatherAPI key, weather information of the location will be popped up
+If you put openweatherAPI key, weather information of the location will be popped up.
 
 ![mapbox_Ex8_geolocation_weather](https://user-images.githubusercontent.com/52831199/92929682-e5b1a200-f47b-11ea-8314-5e5be1355103.PNG)
 
 
-```bsh
+```javascript
  data:{
         ...
-        openweathermapKey:'OPENWEATHER API HERE'
+        openweathermapKey:'OPENWEATHERMAP API KEY HERE'
 ```
 
 # License
 This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).<br />
 However, this project has a dependency on [MapBox GL JS](https://github.com/mapbox/mapbox-gl-js/).<br />
 For legitimate use, you have to check a [3-Clause BSD license](https://github.com/mapbox/mapbox-gl-js/blob/main/LICENSE.txt).
-
