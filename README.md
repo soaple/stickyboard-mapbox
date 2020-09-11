@@ -15,9 +15,6 @@ $ npm start
 $ npm run build
 ```
 
-# License
-This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).
-
 # Usage examples
 ## Basic marker and line sample
 
@@ -437,3 +434,8 @@ function MapBoxChart(props) {
 
 export default MapBoxChart;
  ```
+
+# License
+This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).<br />
+However, this project has a dependency on [MapBox GL JS](https://github.com/mapbox/mapbox-gl-js/).<br />
+For legitimate use, you have to check a [3-Clause BSD license](https://github.com/mapbox/mapbox-gl-js/blob/main/LICENSE.txt).
