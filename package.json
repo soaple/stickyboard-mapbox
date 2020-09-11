@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "description": "MapBox component for StickyBoard",
     "main": "dist/index.js",
+    
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack --watch",
@@ -10,6 +11,7 @@
         "publish": "npm install && npm run build && npm publish --access public"
     },
     "dependencies": {
+        "axios": "^0.20.0",
         "mapbox-gl": "^1.12.0",
         "prop-types": "^15.7.2",
         "react": "^16.8.6",
