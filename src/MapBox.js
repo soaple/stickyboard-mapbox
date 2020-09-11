@@ -153,11 +153,8 @@ function MapBox(props) {
           }else{
             console.log('Getting current position');
             navigator.geolocation.getCurrentPosition( position => {
-              
-              
+
               const urlByGps = 'https://api.openweathermap.org/data/2.5/weather?lat=' + position.coords.latitude + '&lon=' + position.coords.longitude + '&appid=' + props.data.openweathermapKey;
-              // const urlByGps = 'api.openweathermap.org/data/2.5/weather?lat=' + 37 + '&lon=' + 127 + '&appid=' + props.data.openweathermapKey;
-              // const urlByGps = 'https://api.openweathermap.org/data/2.5/weather?q=Seoul' + '&appid=' + props.data.openweathermapKey;
               
               const loc = {
                 center:[position.coords.longitude,position.coords.latitude],
@@ -199,7 +196,6 @@ function MapBox(props) {
                       border-radius: 50%;
                       cursor: pointer;`;
 
-                      // let reactMarker = React.createElement('div',getMarkerStyle(imgSrc),'styled');
                       let marker = new mapboxgl.Marker(markerElement).setLngLat(loc.center).setPopup(new mapboxgl.Popup({offset:25})
                       .setHTML(`<h2> ${weatherInformation.name} </h2>
                        <p> 
