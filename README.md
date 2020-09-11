@@ -18,14 +18,8 @@ $ npm run build
 # License
 This project is licenced under the [MIT License](http://opensource.org/licenses/mit-license.html).
 
-
-
-
-# Sample code
-This is a sample code, please make your inputs and try
-
-#1 Basic marker and line sample
-
+# Usage examples
+## Basic marker and line sample
 ![mapbox_Ex1](https://user-images.githubusercontent.com/52831199/92392592-783f0200-f159-11ea-993c-a3f44b32315f.PNG)
 
 ```bsh
@@ -133,9 +127,7 @@ function MapBoxChart(props) {
 export default MapBoxChart;
 ```
 
-
-#2 Pitch and bearing
-
+## Pitch and bearing
 ![mapbox_Ex2_pitch_bearing](https://user-images.githubusercontent.com/52831199/92392766-bf2cf780-f159-11ea-8550-564b2d5cf1db.PNG)
 
 ```bsh
@@ -152,11 +144,8 @@ map:{
         ...
 ```
 
-
-#3 enable / disable scroll Zoom
-
+## Enable / disable scroll zoom
 Default is disable.
-
 ![mapbox_Ex3_scrollable](https://user-images.githubusercontent.com/52831199/92394161-fdc3b180-f15b-11ea-862f-8140c4ef087f.PNG)
 
 ```bsh
@@ -166,11 +155,8 @@ map:{
         },
  ```
 
-
-#4 6 types of Map style
-
-1) streets-v11 (default)
-
+## 6 types of Map style
+* streets-v11 (default)
 ![mapbox_Ex2_pitch_bearing](https://user-images.githubusercontent.com/52831199/92392766-bf2cf780-f159-11ea-8550-564b2d5cf1db.PNG)
 
 ```bsh
@@ -180,8 +166,7 @@ map:{
 
 ```
 
-2) light-v10
-
+* light-v10
 ![mapbox_Ex4_theme1](https://user-images.githubusercontent.com/52831199/92394812-2bf5c100-f15d-11ea-87fa-eac9eda4d71f.PNG)
 
 ```bsh
@@ -190,8 +175,7 @@ map:{
             style:1,
 ```
 
-3) dark-v10
-
+* dark-v10
 ![mapbox_Ex4_theme2](https://user-images.githubusercontent.com/52831199/92394832-34e69280-f15d-11ea-868e-e6b5ce246884.PNG)
 
 
@@ -200,8 +184,7 @@ map:{
         canvas:{
             style:2,
 ```
-4) satellite-v9
-
+* satellite-v9
 ![mapbox_Ex6_satelite-v9](https://user-images.githubusercontent.com/52831199/92487154-ddf9bf80-f227-11ea-94d0-859e3236731a.PNG)
 
 ```bsh
@@ -210,8 +193,7 @@ map:{
             style:3,
 ```
 
-5) satellite-streets-v11
-
+* satellite-streets-v11
 ![mapbox_Ex6_satelite-streets-v11](https://user-images.githubusercontent.com/52831199/92487133-d89c7500-f227-11ea-8458-7e09a74b018b.PNG)
 
 ```bsh
@@ -220,8 +202,7 @@ map:{
             style:4,
 ```
 
-6) outdoors-v11
-
+* outdoors-v11
 ![mapbox_Ex6_outdoors-v11](https://user-images.githubusercontent.com/52831199/92487107-d1756700-f227-11ea-8e36-1fb50f1ce8dc.PNG)
 
 ```bsh
@@ -230,10 +211,7 @@ map:{
             style:5,
 ```
 
-
-
-#5 Play map locations as a slidesshow
-
+## 5 Play map locations as a slidesshow
 ![mapbox_Ex5_play](https://user-images.githubusercontent.com/52831199/92400489-f950c600-f166-11ea-8349-5f05885d5083.gif)
 
 ```bsh
@@ -348,8 +326,7 @@ export default MapBoxChart;
 
 ```
 
-
-#6 Additional source and layers
+## 6 Additional source and layers
 
 ![mapbox_Ex5_source_and_layer](https://user-images.githubusercontent.com/52831199/92487195-eb16ae80-f227-11ea-975f-3d5c010c5981.PNG)
 
@@ -386,10 +363,8 @@ export default MapBoxChart;
     }
     ]
  ```
-
-
-
- #7 3d building layers
+ 
+ ## 7 3d building layers
 
  ![mapbox_Ex7_3d-building](https://user-images.githubusercontent.com/52831199/92612903-4d89b080-f2f5-11ea-99d8-92dccea2c997.PNG)
 
